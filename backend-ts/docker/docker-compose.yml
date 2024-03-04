@@ -1,0 +1,42 @@
+version: '2.4'
+services:
+  mysql:
+    image: mysql:8
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=telkom-sigma-technical-test
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin123
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./volumes/mysql:/var/lib/mysql
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h']
+      timeout: 30s
+      retries: 5
+
+  mysql_provisioner:
+    image: mysql:8
+    restart: on-failure
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SQL: |-
+        CREATE DATABASE IF NOT EXISTS telkom-sigma-technical-test;
+        CREATE USER IF NOT EXISTS 'admin'@'%' IDENTIFIED BY 'admin123';
+        GRANT ALL PRIVILEGES ON telkom-sigma-technical-test.* TO 'admin'@'%' WITH GRANT OPTION;
+    entrypoint: /bin/bash -c
+    command:
+      - mysql -u root -padmin123 -h mysql -e "$$SQL"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - mysql
+    environment:
+      - PMA_HOST=mysql
+    ports:
+      - '8080:80'
