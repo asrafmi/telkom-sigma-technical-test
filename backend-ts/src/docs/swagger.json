@@ -119,7 +119,7 @@
       }
     },
     "/api/user/{username}": {
-      "post": {
+      "put": {
         "summary": "Update User Information by username",
         "tags": ["User"],
         "parameters": [
@@ -147,15 +147,127 @@
         }
       }
     },
-    "/api/user/{username}": {
+    "/api/remove/user/{username}": {
       "delete": {
-        "summary": "Delet User",
+        "summary": "Delete User",
         "tags": ["User"],
         "parameters": [
           {
             "in": "path",
             "name": "username",
             "type": "string",
+            "required": true
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/event": {
+      "get": {
+        "summary": "Get All Events",
+        "tags": ["Event"],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/create/event": {
+      "post": {
+        "summary": "Create Event",
+        "tags": ["Event"],
+        "parameters": [
+          {
+            "name": "event",
+            "in": "body",
+            "description": "Event object that want to be updated. Date format: M/D/YYYY",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/update/event/{id}": {
+      "put": {
+        "summary": "Update Event",
+        "tags": ["Event"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "event",
+            "in": "body",
+            "description": "Event object that want to be updated. Date format: M/D/YYYY",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/remove/event/{id}": {
+      "delete": {
+        "summary": "Remove Event",
+        "tags": ["Event"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "number",
             "required": true
           }
         ],

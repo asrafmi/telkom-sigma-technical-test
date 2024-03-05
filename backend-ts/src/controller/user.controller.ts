@@ -3,7 +3,7 @@ import { ICustomError } from '../extends/error';
 import PasswordUtils from '../utils/password';
 import AuthUtils from '../utils/auth';
 import UserSvc from '../services/user.service';
-import Utils from '../utils/response';
+import ResponseUtils from '../utils/response';
 import { UserAttributes } from '../db/models/user.model';
 
 async function fetchUser(r: Request, w: Response) {
@@ -13,7 +13,16 @@ async function fetchUser(r: Request, w: Response) {
     w.status(200).send(data);
   } catch (error) {
     const customError = error as ICustomError;
-    return w.status(customError.status).send(customError.message);
+    return w
+      .status(customError.status)
+      .send(
+        ResponseUtils.ResponseData(
+          customError.status,
+          customError.message,
+          null,
+          null
+        )
+      );
   }
 }
 
@@ -32,14 +41,19 @@ async function login(r: Request, w: Response) {
 
     return w
       .status(200)
-      .send(Utils.ResponseData(200, 'User login', null, user));
+      .send(ResponseUtils.ResponseData(200, 'User login', null, user));
   } catch (error) {
     const customError = error as ICustomError;
 
     return w
       .status(customError.status)
       .send(
-        Utils.ResponseData(customError.status, customError.message, null, null)
+        ResponseUtils.ResponseData(
+          customError.status,
+          customError.message,
+          null,
+          null
+        )
       );
   }
 }
@@ -54,7 +68,9 @@ async function register(r: Request, w: Response) {
 
     const data = await UserSvc.create(r.body);
 
-    w.status(200).send(data);
+    w.status(201).send(
+      ResponseUtils.ResponseData(201, 'User Register', null, data)
+    );
   } catch (error) {
     const customError = error as ICustomError;
     return w
@@ -69,11 +85,13 @@ async function logout(r: Request, w: Response) {
     if (!token) {
       return w
         .status(200)
-        .send(Utils.ResponseData(200, 'User logout', null, null));
+        .send(ResponseUtils.ResponseData(200, 'User logout', null, null));
     }
 
     w.clearCookie('token');
-    w.status(200).send(Utils.ResponseData(200, 'User logout', null, null));
+    w.status(200).send(
+      ResponseUtils.ResponseData(200, 'User logout', null, null)
+    );
   } catch (error) {
     const customError = error as ICustomError;
     return w
@@ -87,7 +105,7 @@ async function update(r: Request, w: Response) {
     const { username } = r.params;
     if (r.body.hasOwnProperty('password')) {
       w.status(400).send(
-        Utils.ResponseData(
+        ResponseUtils.ResponseData(
           400,
           'Password cannot be updated at this endpoint',
           null,
@@ -99,14 +117,16 @@ async function update(r: Request, w: Response) {
 
     if (r.body.hasOwnProperty('role')) {
       w.status(400).send(
-        Utils.ResponseData(400, 'Role cannot be updated', null, null)
+        ResponseUtils.ResponseData(400, 'Role cannot be updated', null, null)
       );
       return;
     }
 
     const data = await UserSvc.update(username, r.body);
 
-    w.status(200).send(Utils.ResponseData(200, 'User updated', null, data));
+    w.status(200).send(
+      ResponseUtils.ResponseData(200, 'User updated', null, data)
+    );
   } catch (error) {
     const customError = error as ICustomError;
     return w
