@@ -22,18 +22,6 @@
     }
   ],
   "paths": {
-    "/api/user": {
-      "get": {
-        "summary": "Get All Users",
-        "tags": ["User"],
-        "produces": ["application/json"],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/user/register": {
       "post": {
         "summary": "Register a new user",
@@ -110,6 +98,67 @@
       "get": {
         "summary": "User Logout",
         "tags": ["User"],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/user": {
+      "get": {
+        "summary": "Get All Users",
+        "tags": ["User"],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/user/{username}": {
+      "post": {
+        "summary": "Update User Information by username",
+        "tags": ["User"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User object that want to be updated",
+            "required": true,
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/user/{username}": {
+      "delete": {
+        "summary": "Delet User",
+        "tags": ["User"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "type": "string",
+            "required": true
+          }
+        ],
         "produces": ["application/json"],
         "responses": {
           "200": {

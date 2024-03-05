@@ -67,4 +67,36 @@ async function create(body: Omit<UserAttributes, 'id'>) {
   }
 }
 
-export default { fetch, login, create };
+async function update(username: string, body: Partial<UserAttributes>) {
+  try {
+    const user = await User.findOne({ where: { username } });
+    if (!user) {
+      throw new HttpNotFound('User not found!');
+    }
+    const update = await user.update(body);
+    return update;
+  } catch (error) {
+    const customError = error as ICustomError;
+    throw customError.status
+      ? customError
+      : new MySqlError(customError.message);
+  }
+}
+
+async function remove(username: string) {
+  try {
+    const user = await User.findOne({ where: { username } });
+    if (!user) {
+      throw new HttpNotFound('User not found!');
+    }
+    const remove = await user.destroy();
+    return remove;
+  } catch (error) {
+    const customError = error as ICustomError;
+    throw customError.status
+      ? customError
+      : new MySqlError(customError.message);
+  }
+}
+
+export default { fetch, login, create, update, remove };

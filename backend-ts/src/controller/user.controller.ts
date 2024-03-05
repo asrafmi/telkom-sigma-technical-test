@@ -82,4 +82,52 @@ async function logout(r: Request, w: Response) {
   }
 }
 
-export default { fetchUser, login, register, logout };
+async function update(r: Request, w: Response) {
+  try {
+    const { username } = r.params;
+    if (r.body.hasOwnProperty('password')) {
+      w.status(400).send(
+        Utils.ResponseData(
+          400,
+          'Password cannot be updated at this endpoint',
+          null,
+          null
+        )
+      );
+      return;
+    }
+
+    if (r.body.hasOwnProperty('role')) {
+      w.status(400).send(
+        Utils.ResponseData(400, 'Role cannot be updated', null, null)
+      );
+      return;
+    }
+
+    const data = await UserSvc.update(username, r.body);
+
+    w.status(200).send(Utils.ResponseData(200, 'User updated', null, data));
+  } catch (error) {
+    const customError = error as ICustomError;
+    return w
+      .status(customError.status)
+      .send({ message: customError.message, status: customError.status });
+  }
+}
+
+async function remove(r: Request, w: Response) {
+  try {
+    const { username } = r.params;
+
+    const data = await UserSvc.remove(username);
+
+    w.status(200).send(data);
+  } catch (error) {
+    const customError = error as ICustomError;
+    return w
+      .status(customError.status)
+      .send({ message: customError.message, status: customError.status });
+  }
+}
+
+export default { fetchUser, login, register, logout, update, remove };
