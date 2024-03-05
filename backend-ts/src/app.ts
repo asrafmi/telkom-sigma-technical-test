@@ -1,6 +1,9 @@
 import express, { Request, Response } from 'express';
+import swaggerUI from 'swagger-ui-express';
 import dotenv from 'dotenv';
 import apiRouter from './routes';
+import * as swaggerDocument from './docs/swagger.json';
+
 const app = express();
 dotenv.config();
 
@@ -11,6 +14,7 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello World');
 });
 
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use('/api', apiRouter);
 
 app.listen(process.env.PORT, () => {

@@ -1,6 +1,11 @@
 import { Op } from 'sequelize';
 import User, { UserAttributes } from '../db/models/user.model';
-import { HttpNotFound, ICustomError, MySqlError } from '../extends/error';
+import {
+  ConflictError,
+  HttpNotFound,
+  ICustomError,
+  MySqlError,
+} from '../extends/error';
 import Utils from '../utils/password';
 
 async function fetch() {
@@ -22,7 +27,6 @@ async function login(body: Pick<UserAttributes, 'username' | 'password'>) {
     });
 
     if (user.length === 0) {
-      console.log('user', user);
       throw new HttpNotFound('Wrong username/password!');
     }
 
@@ -37,17 +41,29 @@ async function login(body: Pick<UserAttributes, 'username' | 'password'>) {
     return user[0];
   } catch (error) {
     const customError = error as ICustomError;
-    throw customError.status ? error : new MySqlError(customError.message);
+    throw customError.status
+      ? customError
+      : new MySqlError(customError.message);
   }
 }
 
 async function create(body: Omit<UserAttributes, 'id'>) {
   try {
+    const findUser = await User.findAll({
+      where: {
+        [Op.or]: [{ username: body.username }, { email: body.email }],
+      },
+    });
+    if (findUser.length) {
+      throw new ConflictError('Username or email already exists!');
+    }
     const user = await User.create(body);
     return user;
   } catch (error) {
     const customError = error as ICustomError;
-    throw new MySqlError(customError.message);
+    throw customError.status
+      ? customError
+      : new MySqlError(customError.message);
   }
 }
 

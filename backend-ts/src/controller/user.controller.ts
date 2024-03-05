@@ -42,7 +42,9 @@ async function register(r: Request, w: Response) {
     w.status(200).send(data);
   } catch (error) {
     const customError = error as ICustomError;
-    return w.status(customError.status).send(customError.message);
+    return w
+      .status(customError.status)
+      .send({ message: customError.message, status: customError.status });
   }
 }
 

@@ -4,13 +4,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const GenerateToken = (data: any): string => {
-  console.log('aswwwww', process.env.JWT_TOKEN);
-  console.log('dataaaa', data.dataValues);
-  
   const token = jwt.sign(data, process.env.JWT_TOKEN as string, {
-    expiresIn: '20s',
+    expiresIn: '1h',
   });
-  console.log('token', token);
 
   return token;
 };
