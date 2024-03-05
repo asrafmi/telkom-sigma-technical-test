@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
 import swaggerUI from 'swagger-ui-express';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import apiRouter from './routes';
 import * as swaggerDocument from './docs/swagger.json';
@@ -9,6 +11,13 @@ dotenv.config();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(
+  cors({
+    credentials: true,
+    origin: true,
+  })
+);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello World');
