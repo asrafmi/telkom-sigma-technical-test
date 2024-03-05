@@ -1,14 +1,13 @@
 import { Router } from 'express';
-import userCtrl from '../controller/user.controller';
-import userValidation from '../middleware/validation/user.validation';
+import UserCtrl from '../controller/user.controller';
+import UserValidation from '../middleware/validation/user.validation';
+import AuthUtils from '../utils/auth';
 
 const apiRouter = Router();
 
-apiRouter.get('/user', userCtrl.fetchUser);
-apiRouter.post('/user/login', userCtrl.login);
-apiRouter.post(
-  '/user/register',
-  userValidation.RegisterValidation,
-  userCtrl.register
-);
+apiRouter.get('/user', AuthUtils.Authenticated, UserCtrl.fetchUser);
+apiRouter.post('/user/login', UserCtrl.login);
+apiRouter.post('/user/register',  UserValidation.RegisterValidation, UserCtrl.register);
+apiRouter.get('/user/logout', AuthUtils.Authenticated, UserCtrl.logout);
+
 export default apiRouter;

@@ -13,6 +13,7 @@ export interface UserAttributes {
   password: string;
   fullname: string;
   role: Role;
+  token?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -23,6 +24,7 @@ class User extends Model<UserAttributes> implements UserAttributes {
   public email!: string;
   public password!: string;
   public fullname!: string;
+  public token!: string;
   public role!: Role;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;

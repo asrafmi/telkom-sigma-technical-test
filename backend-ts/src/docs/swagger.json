@@ -8,6 +8,19 @@
   "host": "localhost:3000",
   "basePath": "/",
   "schemes": ["http"],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "authorization",
+      "in": "header",
+      "description": "Enter the token with the `Bearer: ` prefix, e.g. 'Bearer abcde12345'."
+    }
+  },
+  "security": [
+    {
+      "Bearer": []
+    }
+  ],
   "paths": {
     "/api/user": {
       "get": {
@@ -86,6 +99,18 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/user/logout": {
+      "get": {
+        "summary": "User Logout",
+        "tags": ["User"],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK"
