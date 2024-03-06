@@ -4,8 +4,6 @@ import { redirect } from 'next/navigation';
 import { SubmitButton } from '../components/submit-button';
 
 export default function Login() {
-  async function register(formData: FormData) {}
-
   return (
     <div className="flex h-screen w-screen items-center justify-center bg-gray-50">
       <div className="z-10 w-full max-w-md overflow-hidden rounded-2xl border border-gray-100 shadow-xl">
@@ -15,7 +13,7 @@ export default function Login() {
             Create an account with your email and password
           </p>
         </div>
-        <Form action={register}>
+        <Form>
           <SubmitButton>Sign Up</SubmitButton>
           <p className="text-center text-sm text-gray-600">
             {'Already have an account? '}
