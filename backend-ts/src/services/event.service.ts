@@ -33,11 +33,11 @@ async function create(body: Omit<EventAttributes, 'id'>) {
 
 async function update(id: number, body: Omit<EventAttributes, 'id'>) {
   try {
-    const event = await Event.findByPk(id);
+    const event = await Event.findOne({ where: { id } });
     if (!event) {
       throw new MySqlError('Event not found!');
     }
-    const update = await event.update(body);
+    const update = await Event.update(body, { where: { id } });
     return update;
   } catch (error) {
     const customError = error as ICustomError;
@@ -49,11 +49,11 @@ async function update(id: number, body: Omit<EventAttributes, 'id'>) {
 
 async function remove(id: number) {
   try {
-    const event = await Event.findByPk(id);
+    const event = await Event.findOne({ where: { id } });
     if (!event) {
       throw new MySqlError('Event not found!');
     }
-    const remove = await event.destroy();
+    const remove = await Event.destroy({ where: { id } });
     return remove;
   } catch (error) {
     const customError = error as ICustomError;
