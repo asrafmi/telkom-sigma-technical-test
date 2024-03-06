@@ -10,8 +10,13 @@ export default async function handler(
   res: NextApiResponse<Data | { error: string }>
 ) {
   try {
+    const { id } = req.query;
+    const { token } = req.body;
+    console.log('id', id);
+    console.log('token', token);
+
     const [err, response] = await to(
-      backendRequest().post('/api/user/register', req.body)
+      backendRequest(token).get(`/api/event/${id}`)
     );
     if (err) {
       throw err;

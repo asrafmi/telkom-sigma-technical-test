@@ -2,7 +2,10 @@ import { ArrowRightCircleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import slugify from 'slugify';
 import { Event } from '@/types/post';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { AuthContext } from '@/context/Auth';
+import toast from 'react-hot-toast';
 
 interface CardProps {
   event: Event;
@@ -10,13 +13,24 @@ interface CardProps {
 
 const Card = ({ event }: CardProps) => {
   const [isHover, setIsHover] = useState(false);
+  const { token } = useContext(AuthContext);
+  const router = useRouter();
   const { id, name, description } = event;
   const slug =
     slugify(name, { lower: true, remove: /[*+~.()'"!:@]/g }) + `-${id}`;
 
+  const handleCardClick = () => {
+    console.log('token', token);
+
+    if (token) {
+      router.push(`/event/${slug}`, undefined, { shallow: true });
+      return;
+    }
+    toast.error('You need to login first');
+  };
   return (
-    <Link
-      href={`/event/${slug}`}
+    <div
+      onClick={handleCardClick}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
       className="cursor-pointer relative w-full px-6 pt-6 pb-10 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100"
@@ -37,7 +51,7 @@ const Card = ({ event }: CardProps) => {
           }}
         />
       </div>
-    </Link>
+    </div>
   );
 };
 
