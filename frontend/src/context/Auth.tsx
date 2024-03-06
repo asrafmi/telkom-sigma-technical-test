@@ -21,8 +21,6 @@ type ContextType = {
 
 const userData = () => {
   if (typeof window !== 'undefined') {
-    // console.log('masokkk user', localStorage.getItem(userStorageKey));
-
     return localStorage.getItem(userStorageKey)
       ? JSON.parse(localStorage.getItem(userStorageKey) as string)
       : null;
@@ -32,11 +30,9 @@ const userData = () => {
 
 const userToken = () => {
   if (typeof window !== 'undefined') {
-    // console.log('masokkk token', localStorage.getItem(userTokenStorageKey));
     return localStorage.getItem(userTokenStorageKey);
   }
-  console.log('gamasok');
-  
+
   return null;
 };
 

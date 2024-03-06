@@ -36,6 +36,4 @@ const CreateValidation = async (
   }
 };
 
-// TODO: Add more validation for update and delete
-
 export default { CreateValidation };
