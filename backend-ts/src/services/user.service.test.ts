@@ -148,22 +148,24 @@ describe('create', () => {
 });
 
 describe('update', () => {
-  // it('should update an existing user', async () => {
-  //   const existingUser = {
-  //     id: 1,
-  //     username: 'existinguser',
-  //     fullname: 'Existing User',
-  //   };
-  //   User.findOne.mockResolvedValue(existingUser);
-  //   const updatedData = { fullname: 'Updated User' };
+  it('should update an existing user', async () => {
+    const existingUser = {
+      id: 1,
+      username: 'existinguser',
+      fullname: 'Existing User',
+    };
+    User.findOne.mockResolvedValue(existingUser);
+    const updatedData = { fullname: 'Updated User' };
+    const updatedUser = { ...existingUser, ...updatedData };
+    User.update.mockResolvedValue(updatedUser);
 
-  //   const result = await UserSvc.update('existinguser', updatedData);
+    const result = await UserSvc.update('existinguser', updatedData);
 
-  //   expect(User.findOne).toHaveBeenCalledWith({
-  //     where: { username: 'existinguser' },
-  //   });
-  //   expect(result.fullname).toEqual(updatedData.fullname);
-  // });
+    expect(User.findOne).toHaveBeenCalledWith({
+      where: { username: 'existinguser' },
+    });
+    expect(result).toEqual(updatedUser);
+  });
 
   it('should throw HttpNotFound if user is not found', async () => {
     User.findOne.mockResolvedValue(null);
@@ -184,24 +186,24 @@ describe('update', () => {
 });
 
 describe('remove', () => {
-  // it('should remove an existing user', async () => {
-  //   const existingUser = {
-  //     id: 1,
-  //     username: 'existinguser',
-  //     fullname: 'Existing User',
-  //   };
-  //   User.findOne.mockResolvedValue(existingUser);
-  //   const destroyResult = { success: true };
-  //   existingUser.destroy.mockResolvedValue(destroyResult);
+  it('should remove an existing user', async () => {
+    const existingUser = {
+      id: 1,
+      username: 'existinguser',
+      fullname: 'Existing User',
+    };
+    User.findOne.mockResolvedValue(existingUser);
+    const destroyResult = { success: true };
+    User.destroy.mockResolvedValue(destroyResult);
 
-  //   const result = await UserSvc.remove('existinguser');
+    const result = await UserSvc.remove('existinguser');
 
-  //   expect(User.findOne).toHaveBeenCalledWith({
-  //     where: { username: 'existinguser' },
-  //   });
-  //   expect(existingUser.destroy).toHaveBeenCalled();
-  //   expect(result).toEqual(destroyResult);
-  // });
+    expect(User.findOne).toHaveBeenCalledWith({
+      where: { username: 'existinguser' },
+    });
+    expect(User.destroy).toHaveBeenCalled();
+    expect(result).toEqual(destroyResult);
+  });
 
   it('should throw HttpNotFound if user is not found', async () => {
     User.findOne.mockResolvedValue(null);

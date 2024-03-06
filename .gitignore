@@ -1,2 +1,3 @@
 node_modules
 backend-ts/docker/volumes
+backend-ts/coverage

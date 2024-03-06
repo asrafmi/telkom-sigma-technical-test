@@ -75,7 +75,14 @@ async function register(r: Request, w: Response) {
     const customError = error as ICustomError;
     return w
       .status(customError.status)
-      .send({ message: customError.message, status: customError.status });
+      .send(
+        ResponseUtils.ResponseData(
+          customError.status,
+          customError.message,
+          null,
+          null
+        )
+      );
   }
 }
 
@@ -96,7 +103,14 @@ async function logout(r: Request, w: Response) {
     const customError = error as ICustomError;
     return w
       .status(customError.status)
-      .send({ message: customError.message, status: customError.status });
+      .send(
+        ResponseUtils.ResponseData(
+          customError.status,
+          customError.message,
+          null,
+          null
+        )
+      );
   }
 }
 
@@ -131,7 +145,14 @@ async function update(r: Request, w: Response) {
     const customError = error as ICustomError;
     return w
       .status(customError.status)
-      .send({ message: customError.message, status: customError.status });
+      .send(
+        ResponseUtils.ResponseData(
+          customError.status,
+          customError.message,
+          null,
+          null
+        )
+      );
   }
 }
 
@@ -141,12 +162,21 @@ async function remove(r: Request, w: Response) {
 
     const data = await UserSvc.remove(username);
 
-    w.status(200).send(data);
-  } catch (error) {
+    w.status(200).send(
+      ResponseUtils.ResponseData(200, 'User removed', null, data)
+    );
+  } catch (error: any) {
     const customError = error as ICustomError;
     return w
       .status(customError.status)
-      .send({ message: customError.message, status: customError.status });
+      .send(
+        ResponseUtils.ResponseData(
+          customError.status,
+          customError.message,
+          null,
+          null
+        )
+      );
   }
 }
 

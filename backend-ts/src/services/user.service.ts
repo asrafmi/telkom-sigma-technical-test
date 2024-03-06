@@ -73,7 +73,8 @@ async function update(username: string, body: Partial<UserAttributes>) {
     if (!user) {
       throw new HttpNotFound('User not found!');
     }
-    const update = await user.update(body);
+
+    const update = await User.update(body, { where: { username } });
     return update;
   } catch (error) {
     const customError = error as ICustomError;
@@ -89,9 +90,11 @@ async function remove(username: string) {
     if (!user) {
       throw new HttpNotFound('User not found!');
     }
-    const remove = await user.destroy();
+
+    const remove = await User.destroy({ where: { username } });
+
     return remove;
-  } catch (error) {
+  } catch (error: any) {
     const customError = error as ICustomError;
     throw customError.status
       ? customError
