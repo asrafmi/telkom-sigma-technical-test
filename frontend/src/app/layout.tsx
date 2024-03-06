@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from './navbar';
 import MainLayout from '@/layout/MainLayout';
+import { AuthContextProvider } from '@/context/Auth';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,7 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full bg-gray-50">
-      <MainLayout>{children}</MainLayout>
+      <AuthContextProvider>
+        <MainLayout>{children}</MainLayout>
+      </AuthContextProvider>
     </html>
   );
 }

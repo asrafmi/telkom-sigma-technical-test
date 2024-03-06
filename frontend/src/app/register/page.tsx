@@ -1,11 +1,14 @@
 'use client';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { SubmitButton } from '../components/submit-button';
 import toast from 'react-hot-toast';
 import to from 'await-to-js';
+import { useRouter } from 'next/navigation';
+import { AuthContext } from '@/context/Auth';
 
 export default function Register() {
+  const { token, user } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     email: '',
     username: '',
@@ -13,6 +16,14 @@ export default function Register() {
     fullname: '',
     password: '',
   });
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (token || user) {
+      router.push('/');
+    }
+  }, [token, user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,7 +35,6 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
     const data = await fetch('/api/register', {
       method: 'POST',
       headers: {
