@@ -1,8 +1,10 @@
 import Event from '../db/models/event.model';
+import User from '../db/models/user.model';
 import { ConflictError, MySqlError } from '../extends/error';
 import EventSvc from './event.service';
 
 jest.mock('../db/models/event.model');
+jest.mock('../db/models/user.model');
 
 describe('create', () => {
   afterEach(() => {
@@ -82,6 +84,42 @@ describe('fetch', () => {
     Event.findAll.mockRejectedValue(mockError);
 
     await expect(EventSvc.fetch()).rejects.toThrow(MySqlError);
+  });
+});
+
+describe('fetchByUser', () => {
+  it('should fetch events by user', async () => {
+    const user_id = 1;
+    const mockEvents = [
+      { id: 1, name: 'Event 1', date: '2022-01-01', location: 'Location 1' },
+      { id: 2, name: 'Event 2', date: '2022-02-01', location: 'Location 2' },
+    ];
+    Event.findAll.mockResolvedValue(mockEvents);
+    User.hasMany.mockResolvedValue(mockEvents);
+
+    const result = await EventSvc.fetchByUser(user_id);
+
+    expect(Event.findAll).toHaveBeenCalledWith({
+      where: {
+        user_id,
+      },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'username', 'email'],
+        },
+      ],
+    });
+    expect(result).toEqual(mockEvents);
+  });
+
+  it('should throw MySqlError if database query fails', async () => {
+    const user_id = 1;
+    const mockError = new Error('Database query failed');
+    Event.findAll.mockRejectedValue(mockError);
+
+    await expect(EventSvc.fetchByUser(user_id)).rejects.toThrow(MySqlError);
   });
 });
 

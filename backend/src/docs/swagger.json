@@ -312,6 +312,26 @@
           }
         }
       }
+    },
+    "/api/event/{user_id}": {
+      "get": {
+        "summary": "Get All Events",
+        "tags": ["Event"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "type": "number",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   }
 }

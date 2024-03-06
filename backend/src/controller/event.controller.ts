@@ -23,6 +23,27 @@ async function fetch(r: Request, w: Response) {
   }
 }
 
+async function fetchByUser(r: Request, w: Response) {
+  try {
+    const { user_id } = r.params;
+
+    const event = await EventSvc.fetchByUser(parseInt(user_id));
+    w.status(200).send(event);
+  } catch (error) {
+    const customError = error as ICustomError;
+    return w
+      .status(500)
+      .json(
+        ResponseUtils.ResponseData(
+          customError.status,
+          customError.message,
+          null,
+          null
+        )
+      );
+  }
+}
+
 async function create(r: Request, w: Response) {
   try {
     const { date } = r.body;
@@ -117,4 +138,11 @@ async function createEventWithUser(r: Request, w: Response) {
   }
 }
 
-export default { fetch, create, update, remove, createEventWithUser };
+export default {
+  fetch,
+  create,
+  update,
+  remove,
+  createEventWithUser,
+  fetchByUser,
+};

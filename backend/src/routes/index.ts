@@ -17,10 +17,11 @@ apiRouter.put('/user/:username', AuthMiddleware.Authenticated, UserValidation.Up
 apiRouter.delete('/user/:username', AuthMiddleware.Authenticated, AuthMiddleware.AdminRole, UserCtrl.remove);
 
 // Event routes
-apiRouter.get('/event', AuthMiddleware.Authenticated, EventCtrl.fetch);
+apiRouter.get('/event', EventCtrl.fetch);
 apiRouter.post('/event', EventValidation.CreateValidation, AuthMiddleware.Authenticated, AuthMiddleware.AdminRole, EventCtrl.create);
 apiRouter.post('/event-user', AuthMiddleware.Authenticated, EventCtrl.createEventWithUser);
 apiRouter.put('/event/:id', AuthMiddleware.Authenticated, AuthMiddleware.AdminRole, EventCtrl.update);
 apiRouter.delete('/event/:id', AuthMiddleware.Authenticated, EventCtrl.remove);
+apiRouter.get('/event/:user_id', AuthMiddleware.Authenticated, EventCtrl.fetchByUser);
 
 export default apiRouter;

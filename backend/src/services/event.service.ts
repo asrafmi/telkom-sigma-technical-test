@@ -1,9 +1,31 @@
 import Event, { EventAttributes } from '../db/models/event.model';
+import { User } from '../db/models';
 import { ConflictError, ICustomError, MySqlError } from '../extends/error';
 
 async function fetch() {
   try {
     const event = await Event.findAll({});
+    return event;
+  } catch (error) {
+    const customError = error as ICustomError;
+    throw new MySqlError(customError.message);
+  }
+}
+
+async function fetchByUser(user_id: number) {
+  try {
+    const event = await Event.findAll({
+      where: {
+        user_id,
+      },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'username', 'email'],
+        },
+      ],
+    });
     return event;
   } catch (error) {
     const customError = error as ICustomError;
@@ -75,4 +97,11 @@ async function createEventWithUser(event_id: number, user_id: number) {
   }
 }
 
-export default { fetch, create, update, remove, createEventWithUser };
+export default {
+  fetch,
+  create,
+  update,
+  remove,
+  createEventWithUser,
+  fetchByUser,
+};

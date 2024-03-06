@@ -61,7 +61,8 @@ Event.init(
   },
   {
     sequelize: sequelizeConnection,
-    modelName: 'Event',
+    tableName: 'Events',
+    timestamps: true,
   }
 );
 
