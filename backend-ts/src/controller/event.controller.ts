@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import EventSvc from '../services/event.service';
 import ResponseUtils from '../utils/response';
+import AuthUtils from '../utils/auth';
 import { ICustomError } from '../extends/error';
 
 async function fetch(r: Request, w: Response) {
@@ -87,4 +88,33 @@ async function remove(r: Request, w: Response) {
   }
 }
 
-export default { fetch, create, update, remove };
+async function createEventWithUser(r: Request, w: Response) {
+  try {
+    const authToken = r.headers['authorization'] as any;
+    const token = authToken && authToken.split(' ')[1];
+    const result = AuthUtils.ExtractToken(token);
+    const { id } = result;
+
+    const { event_id } = r.body;
+
+    const data = await EventSvc.createEventWithUser(event_id, id);
+
+    w.status(201).send(
+      ResponseUtils.ResponseData(201, 'Event created', null, data)
+    );
+  } catch (error) {
+    const customError = error as ICustomError;
+    return w
+      .status(customError.status)
+      .send(
+        ResponseUtils.ResponseData(
+          customError.status,
+          customError.message,
+          null,
+          null
+        )
+      );
+  }
+}
+
+export default { fetch, create, update, remove, createEventWithUser };

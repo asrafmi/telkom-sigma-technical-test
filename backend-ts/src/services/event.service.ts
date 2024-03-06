@@ -63,4 +63,16 @@ async function remove(id: number) {
   }
 }
 
-export default { fetch, create, update, remove };
+async function createEventWithUser(event_id: number, user_id: number) {
+  try {
+    const event = await Event.update({ user_id }, { where: { id: event_id } });
+    return event;
+  } catch (error) {
+    const customError = error as ICustomError;
+    throw customError.status
+      ? customError
+      : new MySqlError(customError.message);
+  }
+}
+
+export default { fetch, create, update, remove, createEventWithUser };

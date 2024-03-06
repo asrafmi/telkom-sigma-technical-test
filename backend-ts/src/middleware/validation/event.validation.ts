@@ -26,8 +26,6 @@ const CreateValidation = async (
     const validate = new Validator(data, rules);
 
     if (validate.fails()) {
-      console.log('masok sini ajg');
-
       return res.status(400).send({ status: 400, message: validate.errors });
     }
     next();

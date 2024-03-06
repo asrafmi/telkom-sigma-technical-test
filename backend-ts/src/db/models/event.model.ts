@@ -26,6 +26,7 @@ class Event extends Model<EventAttributes> implements EventAttributes {
     Event.belongsTo(models.User, {
       foreignKey: 'user_id',
       onDelete: 'CASCADE',
+      as: 'user',
     });
   }
 }

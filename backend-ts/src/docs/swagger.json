@@ -135,7 +135,19 @@
             "description": "User object that want to be updated",
             "required": true,
             "schema": {
-              "type": "object"
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "fullname": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                }
+              }
             }
           }
         ],
@@ -145,9 +157,7 @@
             "description": "OK"
           }
         }
-      }
-    },
-    "/api/remove/user/{username}": {
+      },
       "delete": {
         "summary": "Delete User",
         "tags": ["User"],
@@ -177,9 +187,7 @@
             "description": "OK"
           }
         }
-      }
-    },
-    "/api/create/event": {
+      },
       "post": {
         "summary": "Create Event",
         "tags": ["Event"],
@@ -216,7 +224,35 @@
         }
       }
     },
-    "/api/update/event/{id}": {
+    "/api/event-user": {
+      "post": {
+        "summary": "Create Event related to User",
+        "tags": ["Event"],
+        "parameters": [
+          {
+            "name": "event",
+            "in": "body",
+            "description": "Event object that want to be updated. Date format: M/D/YYYY",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "event_id": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/event/{id}": {
       "put": {
         "summary": "Update Event",
         "tags": ["Event"],
@@ -257,9 +293,7 @@
             "description": "OK"
           }
         }
-      }
-    },
-    "/api/remove/event/{id}": {
+      },
       "delete": {
         "summary": "Remove Event",
         "tags": ["Event"],

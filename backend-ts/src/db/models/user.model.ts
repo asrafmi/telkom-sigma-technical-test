@@ -28,6 +28,14 @@ class User extends Model<UserAttributes> implements UserAttributes {
   public role!: Role;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  public static associate(models: any) {
+    User.hasMany(models.Event, {
+      foreignKey: 'user_id',
+      onDelete: 'CASCADE',
+      as: 'events',
+    });
+  }
 }
 
 User.init(

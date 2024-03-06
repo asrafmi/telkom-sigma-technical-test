@@ -1,13 +1,10 @@
 import Validator from 'validatorjs';
 import { Request, Response, NextFunction } from 'express';
+import ResponseUtils from '../../utils/response';
 
-const RegisterValidation = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const RegisterValidation = async (r: Request, w: Response, n: NextFunction) => {
   try {
-    const { username, email, password, fullname, role } = req.body;
+    const { username, email, password, fullname, role } = r.body;
 
     const data = {
       username,
@@ -28,16 +25,50 @@ const RegisterValidation = async (
     const validate = new Validator(data, rules);
 
     if (validate.fails()) {
-      return res.status(400).send({ status: 400, message: validate.errors });
+      return w
+        .status(400)
+        .send(
+          ResponseUtils.ResponseData(400, 'Bad Request', validate.errors, null)
+        );
     }
-    next();
+    n();
   } catch (error: any) {
-    return res
+    return w
       .status(500)
-      .send({ status: 500, message: 'InternalServerError' });
+      .send(ResponseUtils.ResponseData(500, error.message, null, null));
   }
 };
 
-// TODO: Add more validation for update and delete user
+const UpdateValidation = async (r: Request, w: Response, n: NextFunction) => {
+  try {
+    const { username, email, fullname } = r.body;
+    const data = {
+      username,
+      email,
+      fullname,
+    };
 
-export default { RegisterValidation };
+    const rules: Validator.Rules = {
+      username: 'string|max:20',
+      email: 'email',
+      fullname: 'string|max:50',
+    };
+
+    const validate = new Validator(data, rules);
+
+    if (validate.fails()) {
+      return w
+        .status(400)
+        .send(
+          ResponseUtils.ResponseData(400, 'Bad Request', validate.errors, null)
+        );
+    }
+    n();
+  } catch (error: any) {
+    return w
+      .status(500)
+      .send(ResponseUtils.ResponseData(500, error.message, null, null));
+  }
+};
+
+export default { RegisterValidation, UpdateValidation };
