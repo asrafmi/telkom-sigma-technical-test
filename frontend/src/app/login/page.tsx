@@ -1,7 +1,7 @@
 'use client';
 import { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { SubmitButton } from '../components/submit-button';
+import { SubmitButton } from '../components/SubmitButton';
 import toast from 'react-hot-toast';
 import { AuthContext } from '@/context/Auth';
 import { useRouter } from 'next/navigation';
