@@ -20,6 +20,7 @@ apiRouter.delete('/user/:username', AuthMiddleware.Authenticated, AuthMiddleware
 apiRouter.get('/event', EventCtrl.fetch);
 apiRouter.post('/event', EventValidation.CreateValidation, AuthMiddleware.Authenticated, AuthMiddleware.AdminRole, EventCtrl.create);
 apiRouter.post('/event-user', AuthMiddleware.Authenticated, EventCtrl.createEventWithUser);
+apiRouter.get('/event/:id', AuthMiddleware.Authenticated, EventCtrl.getOne);
 apiRouter.put('/event/:id', AuthMiddleware.Authenticated, AuthMiddleware.AdminRole, EventCtrl.update);
 apiRouter.delete('/event/:id', AuthMiddleware.Authenticated, EventCtrl.remove);
 apiRouter.get('/event/:user_id', AuthMiddleware.Authenticated, EventCtrl.fetchByUser);

@@ -138,6 +138,28 @@ async function createEventWithUser(r: Request, w: Response) {
   }
 }
 
+async function getOne(r: Request, w: Response) {
+  try {
+    const { id } = r.params;
+    const event = await EventSvc.getOne(parseInt(id));
+    w.status(200).send(
+      ResponseUtils.ResponseData(200, 'Event found', null, event)
+    );
+  } catch (error) {
+    const customError = error as ICustomError;
+    return w
+      .status(customError.status)
+      .json(
+        ResponseUtils.ResponseData(
+          customError.status,
+          customError.message,
+          null,
+          null
+        )
+      );
+  }
+}
+
 export default {
   fetch,
   create,
@@ -145,4 +167,5 @@ export default {
   remove,
   createEventWithUser,
   fetchByUser,
+  getOne,
 };

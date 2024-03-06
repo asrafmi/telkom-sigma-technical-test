@@ -97,6 +97,18 @@ async function createEventWithUser(event_id: number, user_id: number) {
   }
 }
 
+async function getOne(id: number) {
+  try {
+    const event = await Event.findOne({ where: { id } });
+    return event;
+  } catch (error) {
+    const customError = error as ICustomError;
+    throw customError.status
+      ? customError
+      : new MySqlError(customError.message);
+  }
+}
+
 export default {
   fetch,
   create,
@@ -104,4 +116,5 @@ export default {
   remove,
   createEventWithUser,
   fetchByUser,
+  getOne,
 };

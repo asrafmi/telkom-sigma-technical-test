@@ -311,6 +311,24 @@
             "description": "OK"
           }
         }
+      },
+      "get": {
+        "summary": "Get Specific Event",
+        "tags": ["Event"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "number",
+            "required": true
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
     },
     "/api/event/{user_id}": {

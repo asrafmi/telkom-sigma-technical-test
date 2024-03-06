@@ -240,3 +240,29 @@ describe('createEventWithUser', () => {
     ).rejects.toThrow(MySqlError);
   });
 });
+
+describe('getOne', () => {
+  it('should return the event with the specified id', async () => {
+    const eventId = 1;
+    const mockEvent = {
+      id: eventId,
+      name: 'Event 1',
+      date: '2022-01-01',
+      location: 'Location 1',
+    };
+    Event.findOne.mockResolvedValue(mockEvent);
+
+    const result = await EventSvc.getOne(eventId);
+
+    expect(Event.findOne).toHaveBeenCalledWith({ where: { id: eventId } });
+    expect(result).toEqual(mockEvent);
+  });
+
+  it('should throw MySqlError if database query fails', async () => {
+    const eventId = 1;
+    const mockError = new Error('Database query failed');
+    Event.findOne.mockRejectedValue(mockError);
+
+    await expect(EventSvc.getOne(eventId)).rejects.toThrow(MySqlError);
+  });
+});
