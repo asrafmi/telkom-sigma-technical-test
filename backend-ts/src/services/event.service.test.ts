@@ -168,3 +168,37 @@ describe('remove', () => {
     await expect(EventSvc.remove(1)).rejects.toThrow(MySqlError);
   });
 });
+
+describe('createEventWithUser', () => {
+  it('should update an event with a user', async () => {
+    const event_id = 1;
+    const user_id = 1;
+    const updatedEvent = {
+      id: event_id,
+      name: 'New Event',
+      date: '2022-01-01',
+      location: 'Some Location',
+      user_id: user_id,
+    };
+    Event.update.mockResolvedValue(updatedEvent);
+
+    const result = await EventSvc.createEventWithUser(event_id, user_id);
+
+    expect(Event.update).toHaveBeenCalledWith(
+      { user_id: user_id },
+      { where: { id: event_id } }
+    );
+    expect(result).toEqual(updatedEvent);
+  });
+
+  it('should throw MySqlError if database query fails', async () => {
+    const event_id = 1;
+    const user_id = 1;
+    const mockError = new Error('Database query failed');
+    Event.update.mockRejectedValue(mockError);
+
+    await expect(
+      EventSvc.createEventWithUser(event_id, user_id)
+    ).rejects.toThrow(MySqlError);
+  });
+});
