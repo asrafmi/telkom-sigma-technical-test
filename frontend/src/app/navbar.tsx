@@ -75,7 +75,7 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8 items-center">
-                {!user | !token ? (
+                {!user || !token ? (
                   authNavigation.map((item) => (
                     <a
                       key={item.name}

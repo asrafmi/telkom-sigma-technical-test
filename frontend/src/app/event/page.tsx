@@ -5,25 +5,35 @@ import { Event } from '@/types/event';
 
 const Event = () => {
   const [event, setEvent] = useState<Event[]>();
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch('/api/event');
-      const data = await response.json();
-
-      setEvent(data);
+      try {
+        const response = await fetch('/api/event');
+        const data = await response.json();
+        setEvent(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false);
+      }
     }
     fetchData();
   }, []);
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl bg-gray-50">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-3">
-        {event?.map((event) => (
-          <Card key={event.id} event={event} onClick={() => openModal(event)} />
-        ))}
-      </div>
+      {isLoading ? (
+        <p className="text-center">Loading...</p>
+      ) : event?.length ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-3">
+          {event.map((event) => (
+            <Card key={event.id} event={event} />
+          ))}
+        </div>
+      ) : (
+        <p className="text-center">No events found.</p>
+      )}
     </main>
   );
 };

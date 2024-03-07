@@ -12,16 +12,14 @@ const EventDetail = () => {
   const router = useRouter();
   const pathName = usePathname();
 
-  let id = pathName?.split('-');
+  let id = pathName?.split('-') as any;
   id = id[id.length - 1];
 
   useEffect(() => {
-    setTokenLocal(token);
+    setTokenLocal(token as any);
   }, [token]);
   useEffect(() => {
     async function fetchData() {
-      console.log('id', id);
-
       const response = await fetch(`/api/event/${id}`, {
         method: 'POST',
         headers: {
@@ -30,12 +28,10 @@ const EventDetail = () => {
         body: JSON.stringify({ token: tokenLocal }),
       });
       const data = await response.json();
-      console.log('data', data);
-
       setEvent(data.data);
     }
     fetchData();
-  }, [tokenLocal]);
+  }, [tokenLocal, id]);
 
   const parseDate = (date: string) => {
     const newDate = new Date(date);
@@ -52,7 +48,7 @@ const EventDetail = () => {
           <b>Location:</b> {event?.location}
         </p>
         <p className="text-sm text-gray-900">
-          <b>Date:</b> {parseDate(event?.date)}
+          <b>Date:</b> {parseDate(event?.date as any)}
         </p>
       </div>
     </main>

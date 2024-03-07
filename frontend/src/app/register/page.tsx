@@ -25,7 +25,7 @@ export default function Register() {
     }
   }, [token, user]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -33,7 +33,7 @@ export default function Register() {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     e.preventDefault();
     const data = await fetch('/api/register', {
       method: 'POST',
@@ -50,7 +50,7 @@ export default function Register() {
       }, 1000);
     } else if (res.errors) {
       const errorMessages = Object.values(res.errors).flat();
-      errorMessages.forEach((errorMessage) => {
+      errorMessages.forEach((errorMessage: any) => {
         toast.error(errorMessage);
       });
     } else {
@@ -68,7 +68,7 @@ export default function Register() {
           </p>
         </div>
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit as any}
           className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16"
         >
           <div>

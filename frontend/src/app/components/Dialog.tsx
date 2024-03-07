@@ -1,7 +1,21 @@
 import React, { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
-const CustomDialog = ({ isOpen, closeModal, title, content, buttonText }) => {
+interface CustomDialogProps {
+  isOpen: boolean;
+  closeModal: () => void;
+  title: string;
+  content: string;
+  buttonText: string;
+}
+
+const CustomDialog = ({
+  isOpen,
+  closeModal,
+  title,
+  content,
+  buttonText,
+}: CustomDialogProps) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog

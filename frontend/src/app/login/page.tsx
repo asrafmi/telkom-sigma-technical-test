@@ -18,9 +18,9 @@ export default function Login() {
     if (token || user) {
       router.push('/');
     }
-  }, [token, user]);
+  }, [token, user, router]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -28,7 +28,7 @@ export default function Login() {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     e.preventDefault();
     const data = await fetch('/api/login', {
       method: 'POST',
@@ -48,7 +48,7 @@ export default function Login() {
       }, 1000);
     } else if (res.errors) {
       const errorMessages = Object.values(res.errors).flat();
-      errorMessages.forEach((errorMessage) => {
+      errorMessages.forEach((errorMessage: any) => {
         toast.error(errorMessage);
       });
     } else {
@@ -65,7 +65,7 @@ export default function Login() {
           </p>
         </div>
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit as any}
           className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16"
         >
           <div>

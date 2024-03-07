@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 import { backendRequest } from '@/infrastructure/backend-request';
 import to from 'await-to-js';
+import { ErrorProps } from '@/types/error';
 
 type Data = {};
 
@@ -19,11 +20,12 @@ export default async function handler(
 
     res.status(200).json(data);
   } catch (error) {
-    res.status(error.response.data.status).send({
-      message: error.response.data.message,
-      status: error.response.data.status,
-      errors: error.response.data.errors
-        ? error.response.data.errors.errors
+    const customError = error as ErrorProps;
+    res.status(customError.response.data.status).send({
+      message: customError.response.data.message,
+      status: customError.response.data.status,
+      errors: customError.response.data.errors
+        ? customError.response.data.errors.errors
         : null,
     });
   }

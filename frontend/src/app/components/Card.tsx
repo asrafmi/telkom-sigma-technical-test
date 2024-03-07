@@ -1,7 +1,7 @@
 import { ArrowRightCircleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import slugify from 'slugify';
-import { Event } from '@/types/post';
+import { Event } from '@/types/event';
 import { useContext, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AuthContext } from '@/context/Auth';
@@ -23,7 +23,7 @@ const Card = ({ event }: CardProps) => {
     console.log('token', token);
 
     if (token) {
-      router.push(`/event/${slug}`, undefined, { shallow: true });
+      router.push(`/event/${slug}`);
       return;
     }
     toast.error('You need to login first');

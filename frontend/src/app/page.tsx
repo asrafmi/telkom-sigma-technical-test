@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Transition } from '@headlessui/react';
 import { Fragment, useEffect, useState } from 'react';
 import Card from './components/Card';
-import { Event } from '@/types/post';
+import { Event } from '@/types/event';
 import CustomDialog from './components/Dialog';
 import Link from 'next/link';
 
@@ -47,7 +47,7 @@ export default function Home() {
         </div>
         <div className="container px-6 mx-auto">
           <div className="w-full h-40 mb-4 overflow-hidden sm:rounded-xl md:mt-12 lg:mt-20 md:h-56 lg:h-[700px]">
-            <img src="/hero.jpg" alt="hero" />
+            <Image src="/hero.jpg" alt="hero" width={1500} height={800}/>
           </div>
         </div>
       </section>
@@ -59,7 +59,7 @@ export default function Home() {
           </h2>
           <div className="max-w-xl mx-auto mt-2 text-lg font-light leading-tight text-gray-500 sm:text-xl md:text-2xl">
             Discover upcoming events and concerts. Get your tickets now and
-            don't miss out on the fun!
+            dont miss out on the fun!
           </div>
         </div>
         <div className="container px-6 mx-auto">
@@ -99,7 +99,7 @@ export default function Home() {
         <div className="container px-6 mx-auto">
           <div className="grid items-center gap-8 md:grid-flow-col-dense md:grid-cols-2 md:gap-12">
             <div className="md:col-start-2">
-              <img className="rounded-lg" src="/event.jpg" alt="event" />
+              <Image className="rounded-lg" src="/event.jpg" alt="event" width={700} height={700}/>
             </div>
             <div className="flex flex-col items-center text-center md:items-start md:text-left">
               <h2 className="text-3xl font-black sm:text-4xl lg:text-5xl">
